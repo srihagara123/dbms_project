@@ -18,7 +18,7 @@ export const getBaseURL = () => {
     }
 
     // Default for deployed production
-    return 'https://dbms-ui-design.onrender.com/api';
+    return 'https://dbms-project-1-z1xy.onrender.com/api';
 };
 
 const API = axios.create({

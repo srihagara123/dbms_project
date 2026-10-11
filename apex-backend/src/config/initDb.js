@@ -114,10 +114,10 @@ const seedBranches = async (pool) => {
             await pool.query(`
                 INSERT INTO Branch (BranchID, BranchName, IFSCCode, Address, City, ContactNumber, IsActive)
                 VALUES 
-                    (1, 'Apex Main Branch - Mumbai', 'APEX0000001', 'Bandra-Kurla Complex', 'Mumbai', '+91 22 2650 1100', true),
-                    (2, 'Apex Silicon Valley - Bengaluru', 'APEX0000002', 'Indiranagar 100 Feet Road', 'Bengaluru', '+91 80 2520 2200', true),
-                    (3, 'Apex Capital Branch - New Delhi', 'APEX0000003', 'Connaught Place', 'New Delhi', '+91 11 2330 3300', true),
-                    (4, 'Apex South Hub - Chennai', 'APEX0000004', 'Anna Salai', 'Chennai', '+91 44 2850 4400', true)
+                    (1, 'Apex Main Branch - Mumbai', 'APEX0000001', 'Bandra-Kurla Complex', 'Mumbai', '+91 2226501100', true),
+                    (2, 'Apex Silicon Valley - Bengaluru', 'APEX0000002', 'Indiranagar 100 Feet Road', 'Bengaluru', '+91 8025202200', true),
+                    (3, 'Apex Capital Branch - New Delhi', 'APEX0000003', 'Connaught Place', 'New Delhi', '+91 1123303300', true),
+                    (4, 'Apex South Hub - Chennai', 'APEX0000004', 'Anna Salai', 'Chennai', '+91 4428504400', true)
                 ON CONFLICT (BranchID) DO NOTHING;
             `);
             try {
