@@ -25,6 +25,7 @@ import {
   Landmark
 } from 'lucide-react';
 import { Customer, BankAccount, Transaction, LoanApplication } from '../../types/bank';
+import { getBaseURL } from '../../services/api';
 
 interface CustomerViewsProps {
   currentTab: string;
@@ -528,7 +529,7 @@ export const AccountStatementView: React.FC<{
         const days = getPeriodDays(period);
         const token = localStorage.getItem('token'); 
         
-        const response = await fetch(`http://localhost:5000/api/transactions/statement?accountId=${selectedAccount}&periodDays=${days}`, {
+        const response = await fetch(`${getBaseURL()}/transactions/statement?accountId=${selectedAccount}&periodDays=${days}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
