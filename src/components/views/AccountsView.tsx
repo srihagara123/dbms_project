@@ -47,13 +47,20 @@ export const AccountsView: React.FC<AccountsViewProps> = ({
 }) => {
   const [selectedAccount, setSelectedAccount] = useState<BankAccount | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+const DEFAULT_BRANCH_OPTIONS = [
+  { id: 1, name: 'Apex Main Branch - Mumbai', code: 'APEX0000001', location: 'Bandra-Kurla Complex, Mumbai' },
+  { id: 2, name: 'Apex Silicon Valley - Bengaluru', code: 'APEX0000002', location: 'Indiranagar, Bengaluru' },
+  { id: 3, name: 'Apex Capital Branch - New Delhi', code: 'APEX0000003', location: 'Connaught Place, New Delhi' },
+  { id: 4, name: 'Apex South Hub - Chennai', code: 'APEX0000004', location: 'Anna Salai, Chennai' },
+];
+
   const [statusFilter, setStatusFilter] = useState('All');
   const [typeFilter, setTypeFilter] = useState('All');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newAccountType, setNewAccountType] = useState('Savings');
-  const [branches, setBranches] = useState<{ id: number; name: string; code: string; location: string }[]>([]);
-  const [selectedBranchId, setSelectedBranchId] = useState<string | number>('');
+  const [branches, setBranches] = useState<{ id: number; name: string; code: string; location: string }[]>(DEFAULT_BRANCH_OPTIONS);
+  const [selectedBranchId, setSelectedBranchId] = useState<string | number>(1);
   const [isCreating, setIsCreating] = useState(false);
   const [deactivatingId, setDeactivatingId] = useState<string | null>(null);
   const [adminProcessingId, setAdminProcessingId] = useState<string | null>(null);
@@ -62,7 +69,7 @@ export const AccountsView: React.FC<AccountsViewProps> = ({
     const fetchBranches = async () => {
       try {
         const res = await API.get('/branches');
-        if (res.data && res.data.length > 0) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           setBranches(res.data);
           setSelectedBranchId(res.data[0].id);
         }
@@ -151,19 +158,21 @@ export const AccountsView: React.FC<AccountsViewProps> = ({
     e.preventDefault();
     setIsCreating(true);
     try {
+      const effectiveBranchId = selectedBranchId || (branches[0] ? branches[0].id : 1);
       const res = await API.post('/accounts/create', {
         accountType: newAccountType,
         initialBalance: 1000,
-        branchId: selectedBranchId,
+        branchId: Number(effectiveBranchId) || 1,
       });
       setIsModalOpen(false);
       if (res.data && res.data.account && setGlobalAccountId) {
-        setGlobalAccountId(res.data.account.accountid || res.data.account.id);
+        setGlobalAccountId(String(res.data.account.accountid || res.data.account.id));
       }
       if (onAccountCreated) onAccountCreated();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to create account:', error);
-      alert('Failed to open account. Please try again.');
+      const msg = error.response?.data?.error || error.response?.data?.details || 'Failed to open account. Please try again.';
+      alert(msg);
     } finally {
       setIsCreating(false);
     }
@@ -578,15 +587,11 @@ export const AccountsView: React.FC<AccountsViewProps> = ({
                   onChange={(e) => setSelectedBranchId(e.target.value)}
                   className="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-blue-500"
                 >
-                  {branches.length === 0 ? (
-                    <option value="4">Apex Main Branch - Mumbai (APEX0000001)</option>
-                  ) : (
-                    branches.map((b) => (
-                      <option key={b.id} value={b.id}>
-                        {b.name} ({b.code}) — {b.location}
-                      </option>
-                    ))
-                  )}
+                  {branches.map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.name} ({b.code}) — {b.location}
+                    </option>
+                  ))}
                 </select>
               </div>
 

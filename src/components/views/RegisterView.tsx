@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, User, Mail, Phone, MapPin, Lock, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowRight, ShieldAlert, Building2 } from 'lucide-react';
+import { ShieldCheck, User, Mail, Phone, MapPin, Lock, Eye, EyeOff, CheckCircle2, AlertCircle, ArrowRight, ShieldAlert, Building2, Loader2 } from 'lucide-react';
 import API from '../../services/api'; // Connected to live backend
 
 interface RegisterViewProps {
@@ -16,6 +16,13 @@ interface BranchOption {
   location: string;
 }
 
+const DEFAULT_BRANCHES: BranchOption[] = [
+  { id: 1, name: 'Apex Main Branch - Mumbai', code: 'APEX0000001', location: 'Bandra-Kurla Complex, Mumbai' },
+  { id: 2, name: 'Apex Silicon Valley - Bengaluru', code: 'APEX0000002', location: 'Indiranagar, Bengaluru' },
+  { id: 3, name: 'Apex Capital Branch - New Delhi', code: 'APEX0000003', location: 'Connaught Place, New Delhi' },
+  { id: 4, name: 'Apex South Hub - Chennai', code: 'APEX0000004', location: 'Anna Salai, Chennai' },
+];
+
 export const RegisterView: React.FC<RegisterViewProps> = ({
   onRegisterSuccess,
   onNavigateLogin,
@@ -31,8 +38,9 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const [branches, setBranches] = useState<BranchOption[]>([]);
-  const [selectedBranchId, setSelectedBranchId] = useState<string | number>('');
+  const [branches, setBranches] = useState<BranchOption[]>(DEFAULT_BRANCHES);
+  const [selectedBranchId, setSelectedBranchId] = useState<string | number>(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -41,12 +49,12 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
     const fetchBranches = async () => {
       try {
         const res = await API.get('/branches');
-        if (res.data && res.data.length > 0) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           setBranches(res.data);
           setSelectedBranchId(res.data[0].id);
         }
       } catch (err) {
-        console.warn('Could not fetch branches in register form', err);
+        console.warn('Could not fetch branches from backend, using default branch options:', err);
       }
     };
     fetchBranches();
@@ -67,19 +75,23 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
     if (password.length < 6) return setErrorMessage('Password must be at least 6 characters.');
     if (password !== confirmPassword) return setErrorMessage('Passwords do not match.');
 
+    setIsSubmitting(true);
+
     try {
       const targetRole = selectedRole === 'admin' ? 'Admin' : 'Customer';
+      const effectiveBranchId = selectedBranchId || (branches[0] ? branches[0].id : 1);
+
       // Send the data to your PostgreSQL Backend with target role and assigned branch!
       await API.post('/auth/register', {
-        name: fullName,
-        email: email,
-        phone: mobileNumber,
-        address: address,
+        name: fullName.trim(),
+        email: email.trim().toLowerCase(),
+        phone: mobileNumber.trim(),
+        address: address.trim(),
         city: 'City (Default)',
         dob: '1990-01-01',
         password: password,
         role: targetRole,
-        branchId: selectedBranchId,
+        branchId: Number(effectiveBranchId) || 1,
       });
 
       setSuccessMessage(
@@ -88,11 +100,23 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
           : '🛡️ Customer account created successfully! Redirecting to Customer Login...'
       );
       setTimeout(() => {
-        onRegisterSuccess(selectedRole, email);
+        onRegisterSuccess(selectedRole, email.trim().toLowerCase());
       }, 1500);
 
     } catch (error: any) {
-      setErrorMessage(error.response?.data?.error || 'Registration failed. Email may already be in use.');
+      console.error('Registration submission error:', error);
+      const serverError = error.response?.data?.error || error.response?.data?.details;
+      const isNetworkError = error.message === 'Network Error' || error.code === 'ERR_NETWORK' || !error.response;
+
+      if (isNetworkError) {
+        setErrorMessage(
+          'Could not reach backend API server. The backend server might be starting up (cold start) or database connection is offline. Please check your deployed backend URL.'
+        );
+      } else {
+        setErrorMessage(serverError || 'Registration failed. Email may already be in use.');
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -296,20 +320,40 @@ export const RegisterView: React.FC<RegisterViewProps> = ({
             {selectedRole === 'admin' ? (
               <button
                 type="submit"
-                className="w-full py-3.5 mt-4 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-purple-600/30 transition-all flex items-center justify-center gap-2 glow-primary"
+                disabled={isSubmitting}
+                className="w-full py-3.5 mt-4 bg-purple-600 hover:bg-purple-500 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-xl text-xs font-bold shadow-lg shadow-purple-600/30 transition-all flex items-center justify-center gap-2 glow-primary"
               >
-                <ShieldAlert className="w-4 h-4" />
-                <span>Register Bank Admin Account</span>
-                <ArrowRight className="w-4 h-4" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Creating Admin Account...</span>
+                  </>
+                ) : (
+                  <>
+                    <ShieldAlert className="w-4 h-4" />
+                    <span>Register Bank Admin Account</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </button>
             ) : (
               <button
                 type="submit"
-                className="w-full py-3.5 mt-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 glow-primary"
+                disabled={isSubmitting}
+                className="w-full py-3.5 mt-4 bg-blue-600 hover:bg-blue-500 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-xl text-xs font-bold shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 glow-primary"
               >
-                <User className="w-4 h-4" />
-                <span>Register Customer Account</span>
-                <ArrowRight className="w-4 h-4" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Creating Customer Account...</span>
+                  </>
+                ) : (
+                  <>
+                    <User className="w-4 h-4" />
+                    <span>Register Customer Account</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </button>
             )}
           </form>

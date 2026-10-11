@@ -41,14 +41,14 @@ export const ActionModal: React.FC<ActionModalProps> = ({
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
-    if (initialAccount) {
-      setSelectedAccountId(initialAccount.id);
-    } else if (accounts && accounts.length > 0) {
-      setSelectedAccountId(accounts[0].id);
+    if (initialAccount && initialAccount.id) {
+      setSelectedAccountId(String(initialAccount.id));
+    } else if (accounts && accounts.length > 0 && accounts[0].id) {
+      setSelectedAccountId(String(accounts[0].id));
     }
   }, [initialAccount, accounts]);
 
-  const selectedAccount = accounts.find((a) => a.id === selectedAccountId);
+  const selectedAccount = accounts.find((a) => String(a.id) === String(selectedAccountId));
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

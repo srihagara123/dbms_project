@@ -21,12 +21,24 @@ exports.registerCustomer = async (req, res) => {
         // Determine target role (Admin vs Customer)
         const targetRole = (role && role.toLowerCase() === 'admin') ? 'Admin' : 'Customer';
 
-        // 3. Resolve target branch ID
+        // 3. Resolve target branch ID (validate existence, fallback to active branch or create default)
         let targetBranchId = branchId ? parseInt(branchId, 10) : null;
+        if (targetBranchId) {
+            const existsCheck = await pool.query('SELECT BranchID FROM Branch WHERE BranchID = $1', [targetBranchId]);
+            if (existsCheck.rows.length === 0) {
+                targetBranchId = null; // Provided branch ID doesn't exist, will fallback
+            }
+        }
         if (!targetBranchId) {
             const defBranch = await pool.query('SELECT BranchID FROM Branch WHERE IsActive = true ORDER BY BranchID ASC LIMIT 1');
             if (defBranch.rows.length > 0) {
                 targetBranchId = defBranch.rows[0].branchid;
+            } else {
+                const newBranch = await pool.query(
+                    `INSERT INTO Branch (BranchName, IFSCCode, Address, City, IsActive)
+                     VALUES ('Apex Main Branch - Mumbai', 'APEX0000001', 'Bandra-Kurla Complex', 'Mumbai', true) RETURNING BranchID`
+                );
+                targetBranchId = newBranch.rows[0].branchid;
             }
         }
 
@@ -63,11 +75,23 @@ exports.registerCustomer = async (req, res) => {
         // 8. If role is Customer, auto-create default Savings Account in the chosen branch
         if (targetRole === 'Customer' && targetBranchId) {
             const accNumber = Math.floor(100000000000 + Math.random() * 900000000000).toString();
-            await pool.query(
+            const accRes = await pool.query(
                 `INSERT INTO Account (AccountNumber, CustomerID, BranchID, AccountType, Balance, Status) 
-                 VALUES ($1, $2, $3, 'Savings', 1000, 'Active') ON CONFLICT DO NOTHING`,
+                 VALUES ($1, $2, $3, 'Savings', 1000, 'Active') RETURNING AccountID`,
                 [accNumber, newUserId, targetBranchId]
             );
+
+            // Per DBMS design, also create linked debit card
+            if (accRes.rows.length > 0) {
+                const cardNum = Math.floor(4000000000000000 + Math.random() * 900000000000000).toString();
+                const expiry = new Date();
+                expiry.setFullYear(expiry.getFullYear() + 5);
+                await pool.query(
+                    `INSERT INTO Card (AccountID, CardNumber, CardType, ExpiryDate, CVV, Status)
+                     VALUES ($1, $2, 'Debit', $3, '123', 'Active') ON CONFLICT DO NOTHING`,
+                    [accRes.rows[0].accountid, cardNum, expiry.toISOString().split('T')[0]]
+                );
+            }
         }
 
         // 9. Commit transaction if everything succeeded
@@ -83,7 +107,11 @@ exports.registerCustomer = async (req, res) => {
     } catch (error) {
         await pool.query('ROLLBACK');
         console.error('Registration error:', error);
-        res.status(500).json({ error: 'Server error during registration' });
+        res.status(500).json({ 
+            error: error.message?.includes('duplicate key') || error.message?.includes('unique constraint')
+                ? 'Email is already registered.'
+                : (error.message || 'Server error during registration')
+        });
     }
 };
 
