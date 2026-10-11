@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const API = axios.create({
     // Replace 'localhost' with your environment variable
-    bbaseURL: 'https://dbms-ui-design.onrender.com/api',
+    baseURL: 'https://dbms-ui-design.onrender.com/api',
     headers: {
         'Content-Type': 'application/json',
     },
