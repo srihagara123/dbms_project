@@ -1,0 +1,6 @@
+{
+  "name": "Apex Bank Management System",
+  "description": "Enterprise dark-themed Bank Management System UI featuring a public landing page, account registration, customer login, interactive dashboard, customer directory, bank account manager, wire transactions ledger, and user profile management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,652 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-mono-num {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Custom Scrollbar for sleek enterprise UI */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0B0B;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563EB;
+}
+
+/* Glassmorphism & Enterprise Card Styling */
+.glass-panel {
+  background: rgba(21, 21, 21, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: #151515;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(37, 99, 235, 0.15);
+}
+
+.glass-card-accent {
+  background: linear-gradient(135deg, rgba(21, 21, 21, 0.95) 0%, rgba(37, 99, 235, 0.1) 100%);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.glow-primary {
+  box-shadow: 0 0 25px rgba(37, 99, 235, 0.35);
+}
+
+.glow-accent {
+  box-shadow: 0 0 25px rgba(0, 212, 255, 0.35);
+}
+
+.glow-success {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+}
+
+.glow-warning {
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+}
+
+.glow-danger {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.25);
+}
+
+/* Background grid pattern */
+.bg-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* Pulse indicator animation */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s infinite ease-in-out;
+}
+
+/* ===================================================
+   TRIPLE THEME ENGINE
+   1. Dark Cobalt (Black & Electric Blue)
+   2. Soft Warm Elegance (Peach & Beige with White)
+   3. Shiny Platinum Glass (Glossy Metallic Chrome & Diamond Cyan)
+   =================================================== */
+
+/* ---------------------------------------------------
+   1. DARK COBALT OBSIDIAN (Default)
+   Sleek black (#0B0B0B) with vibrant electric blue buttons
+   --------------------------------------------------- */
+html[data-theme="dark"],
+body[data-theme="dark"],
+[data-theme="dark"] {
+  background-color: #0B0B0B !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] body,
+[data-theme="dark"] #root,
+[data-theme="dark"] .bg-\[\#0B0B0B\],
+[data-theme="dark"] [class*="bg-[#0B0B0B]"] {
+  background-color: #0B0B0B !important;
+}
+
+[data-theme="dark"] .bg-\[\#151515\],
+[data-theme="dark"] [class*="bg-[#151515]"],
+[data-theme="dark"] aside#sidebar-navigation,
+[data-theme="dark"] .glass-panel,
+[data-theme="dark"] .glass-card {
+  background-color: #151515 !important;
+}
+
+[data-theme="dark"] header#main-app-header,
+[data-theme="dark"] header {
+  background-color: rgba(11, 11, 11, 0.92) !important;
+}
+
+/* Primary Buttons in Dark Cobalt */
+[data-theme="dark"] .bg-blue-600,
+[data-theme="dark"] [class*="bg-blue-600"] {
+  background-color: #2563EB !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .hover\:bg-blue-500:hover,
+[data-theme="dark"] [class*="hover:bg-blue-500"]:hover {
+  background-color: #3B82F6 !important;
+}
+
+[data-theme="dark"] .glow-primary {
+  box-shadow: 0 0 25px rgba(37, 99, 235, 0.35) !important;
+}
+
+/* Secondary & Small Buttons in Dark Cobalt */
+[data-theme="dark"] .bg-slate-800,
+[data-theme="dark"] [class*="bg-slate-800"] {
+  background-color: #1E293B !important;
+  color: #E2E8F0 !important;
+  border-color: #334155 !important;
+}
+
+[data-theme="dark"] .hover\:bg-slate-700:hover,
+[data-theme="dark"] [class*="hover:bg-slate-700"]:hover {
+  background-color: #2D3B4F !important;
+  color: #FFFFFF !important;
+}
+
+/* Toggle Switches in Dark Cobalt */
+[data-theme="dark"] button[role="switch"][aria-checked="true"],
+[data-theme="dark"] button[role="switch"].bg-blue-600 {
+  background-color: #2563EB !important;
+}
+
+[data-theme="dark"] button[role="switch"][aria-checked="false"],
+[data-theme="dark"] button[role="switch"].bg-slate-700 {
+  background-color: #334155 !important;
+}
+
+/* ---------------------------------------------------
+   2. SOFT WARM ELEGANCE (Peach & Beige with White)
+   Soft tones, peach & terracotta buttons, subtle warm beige
+   --------------------------------------------------- */
+html[data-theme="soft"],
+body[data-theme="soft"],
+[data-theme="soft"] {
+  background-color: #FAF7F2 !important;
+  color: #2D2926 !important;
+}
+
+[data-theme="soft"] body,
+[data-theme="soft"] #root,
+[data-theme="soft"] .bg-\[\#0B0B0B\],
+[data-theme="soft"] [class*="bg-[#0B0B0B]"],
+[data-theme="soft"] main {
+  background-color: #FAF7F2 !important;
+  color: #2D2926 !important;
+}
+
+/* Soft Cards & Surfaces (Pure soft white with warm shadow) */
+[data-theme="soft"] .bg-\[\#151515\],
+[data-theme="soft"] [class*="bg-[#151515]"],
+[data-theme="soft"] .glass-panel,
+[data-theme="soft"] .glass-card {
+  background-color: #FFFFFF !important;
+  color: #2D2926 !important;
+  border-color: #E8DFD8 !important;
+  box-shadow: 0 4px 20px rgba(180, 150, 130, 0.08) !important;
+}
+
+/* Soft Sidebar & Header (Vanilla Cream) */
+[data-theme="soft"] aside#sidebar-navigation,
+[data-theme="soft"] aside {
+  background-color: #F5EFEB !important;
+  border-color: #E5DACF !important;
+  color: #2D2926 !important;
+}
+
+[data-theme="soft"] header#main-app-header,
+[data-theme="soft"] header,
+[data-theme="soft"] [class*="bg-[#0B0B0B]/90"] {
+  background-color: rgba(250, 247, 242, 0.95) !important;
+  border-color: #E5DACF !important;
+  color: #2D2926 !important;
+}
+
+/* Soft Sub-containers & Inner Boxes */
+[data-theme="soft"] .bg-\[\#0D0D0D\],
+[data-theme="soft"] [class*="bg-[#0D0D0D]"],
+[data-theme="soft"] .bg-slate-900,
+[data-theme="soft"] [class*="bg-slate-900"],
+[data-theme="soft"] .bg-slate-950 {
+  background-color: #F8F3ED !important;
+  color: #2D2926 !important;
+  border-color: #E2D6CB !important;
+}
+
+/* Soft Borders */
+[data-theme="soft"] .border-slate-800,
+[data-theme="soft"] [class*="border-slate-800"],
+[data-theme="soft"] .border-slate-700,
+[data-theme="soft"] [class*="border-slate-700"] {
+  border-color: #E8DFD8 !important;
+}
+
+/* Soft Typography */
+[data-theme="soft"] h1,
+[data-theme="soft"] h2,
+[data-theme="soft"] h3,
+[data-theme="soft"] h4,
+[data-theme="soft"] .text-white,
+[data-theme="soft"] [class*="text-white"] {
+  color: #2D2926 !important;
+}
+
+[data-theme="soft"] .text-slate-400,
+[data-theme="soft"] .text-slate-500,
+[data-theme="soft"] .text-slate-300,
+[data-theme="soft"] .text-slate-200 {
+  color: #7D7267 !important;
+}
+
+/* Input Fields in Soft Theme */
+[data-theme="soft"] input,
+[data-theme="soft"] select,
+[data-theme="soft"] textarea {
+  background-color: #FFFFFF !important;
+  color: #2D2926 !important;
+  border-color: #DDCFC2 !important;
+}
+
+[data-theme="soft"] input::placeholder,
+[data-theme="soft"] textarea::placeholder {
+  color: #A5998E !important;
+}
+
+[data-theme="soft"] input:focus,
+[data-theme="soft"] select:focus,
+[data-theme="soft"] textarea:focus {
+  border-color: #E07A5F !important;
+  outline: none !important;
+}
+
+/* ALL PRIMARY BUTTONS in Soft Theme (Warm Peach & Terracotta) */
+[data-theme="soft"] .bg-blue-600,
+[data-theme="soft"] .bg-purple-600,
+[data-theme="soft"] .bg-emerald-600,
+[data-theme="soft"] [class*="bg-blue-600"],
+[data-theme="soft"] [class*="bg-purple-600"],
+[data-theme="soft"] [class*="bg-emerald-600"],
+[data-theme="soft"] button[type="submit"] {
+  background-color: #E07A5F !important;
+  color: #FFFFFF !important;
+  border-color: #D47055 !important;
+  box-shadow: 0 4px 14px rgba(224, 122, 95, 0.28) !important;
+}
+
+[data-theme="soft"] .hover\:bg-blue-500:hover,
+[data-theme="soft"] .hover\:bg-purple-500:hover,
+[data-theme="soft"] .hover\:bg-emerald-500:hover,
+[data-theme="soft"] [class*="hover:bg-blue-500"]:hover,
+[data-theme="soft"] [class*="hover:bg-purple-500"]:hover,
+[data-theme="soft"] [class*="hover:bg-emerald-500"]:hover,
+[data-theme="soft"] button[type="submit"]:hover {
+  background-color: #D46A4F !important;
+}
+
+/* ALL SECONDARY, OUTLINE, CANCEL & SMALL BUTTONS in Soft Theme (Warm Creamy Beige) */
+[data-theme="soft"] .bg-slate-800,
+[data-theme="soft"] .bg-slate-700,
+[data-theme="soft"] [class*="bg-slate-800"],
+[data-theme="soft"] [class*="bg-slate-700"],
+[data-theme="soft"] button.border,
+[data-theme="soft"] button.border-slate-700,
+[data-theme="soft"] button.border-slate-800 {
+  background-color: #EFE7DE !important;
+  color: #4A3E36 !important;
+  border: 1px solid #D8C8BA !important;
+}
+
+[data-theme="soft"] .hover\:bg-slate-700:hover,
+[data-theme="soft"] .hover\:bg-slate-600:hover,
+[data-theme="soft"] [class*="hover:bg-slate-700"]:hover,
+[data-theme="soft"] button.border:hover {
+  background-color: #E5DACD !important;
+  color: #2D2926 !important;
+  border-color: #C8B8AA !important;
+}
+
+/* Small Control & Icon Buttons in Soft Theme (e.g. notifications bell, sidebar collapse, chevrons) */
+[data-theme="soft"] #notifications-button,
+[data-theme="soft"] #toggle-sidebar-button,
+[data-theme="soft"] button#user-profile-menu-button {
+  background-color: #EFE7DE !important;
+  border-color: #D8C8BA !important;
+  color: #4A3E36 !important;
+}
+
+[data-theme="soft"] #notifications-button:hover,
+[data-theme="soft"] #toggle-sidebar-button:hover {
+  background-color: #E5DACD !important;
+  color: #E07A5F !important;
+}
+
+/* Navigation Tabs in Soft Theme */
+[data-theme="soft"] nav button {
+  color: #7D7267 !important;
+}
+
+[data-theme="soft"] nav button:hover {
+  background-color: #EFE7DE !important;
+  color: #2D2926 !important;
+}
+
+[data-theme="soft"] nav button.bg-blue-600,
+[data-theme="soft"] nav button.bg-purple-600,
+[data-theme="soft"] nav button[aria-current="page"] {
+  background-color: #E07A5F !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(224, 122, 95, 0.3) !important;
+}
+
+[data-theme="soft"] nav button.bg-blue-600 div,
+[data-theme="soft"] nav button.bg-purple-600 div {
+  color: #FFFFFF !important;
+}
+
+/* ALL TOGGLE SWITCHES in Soft Theme */
+[data-theme="soft"] button[role="switch"] {
+  border: 1px solid #D8CABA !important;
+}
+
+[data-theme="soft"] button[role="switch"][aria-checked="true"],
+[data-theme="soft"] button[role="switch"].bg-blue-600 {
+  background-color: #E07A5F !important;
+  border-color: #D47055 !important;
+}
+
+[data-theme="soft"] button[role="switch"][aria-checked="false"],
+[data-theme="soft"] button[role="switch"].bg-slate-700 {
+  background-color: #D8CABA !important;
+  border-color: #C8B9A8 !important;
+}
+
+[data-theme="soft"] button[role="switch"] span {
+  background-color: #FFFFFF !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Accents, Badges & Action Links in Soft Theme */
+[data-theme="soft"] .text-blue-400,
+[data-theme="soft"] .text-blue-500,
+[data-theme="soft"] .text-cyan-400,
+[data-theme="soft"] .text-purple-400 {
+  color: #C6654A !important;
+}
+
+[data-theme="soft"] .bg-blue-500\/10,
+[data-theme="soft"] .bg-purple-500\/10,
+[data-theme="soft"] .bg-blue-500\/20,
+[data-theme="soft"] .bg-purple-500\/20 {
+  background-color: rgba(224, 122, 95, 0.12) !important;
+  border-color: rgba(224, 122, 95, 0.25) !important;
+  color: #C6654A !important;
+}
+
+[data-theme="soft"] .glow-primary {
+  box-shadow: 0 0 15px rgba(224, 122, 95, 0.25) !important;
+}
+
+/* Table Headers & Rows in Soft Theme */
+[data-theme="soft"] thead {
+  background-color: #F5EFEB !important;
+  color: #4A3E36 !important;
+  border-color: #E8DFD8 !important;
+}
+
+[data-theme="soft"] tr {
+  border-color: #E8DFD8 !important;
+}
+
+[data-theme="soft"] tbody tr:hover {
+  background-color: #FAF5F0 !important;
+}
+
+/* ---------------------------------------------------
+   3. ROYAL AMETHYST & CRYSTAL PLATINUM GLASS
+   Deep obsidian violet background, crystalline glass cards,
+   radiant royal amethyst gradient buttons, specular sheens
+   --------------------------------------------------- */
+html[data-theme="shiny"],
+body[data-theme="shiny"],
+[data-theme="shiny"] {
+  background: radial-gradient(ellipse at 50% 0%, #1f0d3d 0%, #120726 50%, #0a0316 100%) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="shiny"] body,
+[data-theme="shiny"] #root,
+[data-theme="shiny"] .bg-\[\#0B0B0B\],
+[data-theme="shiny"] [class*="bg-[#0B0B0B]"],
+[data-theme="shiny"] main {
+  background: radial-gradient(ellipse at 50% 0%, #1f0d3d 0%, #120726 50%, #0a0316 100%) !important;
+  color: #FFFFFF !important;
+}
+
+/* Glossy Royal Amethyst Glass Cards & Panels with Specular Shine */
+[data-theme="shiny"] .bg-\[\#151515\],
+[data-theme="shiny"] [class*="bg-[#151515]"],
+[data-theme="shiny"] .glass-panel,
+[data-theme="shiny"] .glass-card {
+  background: linear-gradient(135deg, rgba(38, 17, 70, 0.78) 0%, rgba(18, 8, 36, 0.92) 100%) !important;
+  border: 1px solid rgba(192, 132, 252, 0.28) !important;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(233, 213, 255, 0.4) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+/* Glossy Amethyst Glass Sidebar */
+[data-theme="shiny"] aside#sidebar-navigation,
+[data-theme="shiny"] aside {
+  background: linear-gradient(180deg, #1b0a34 0%, #0d041a 100%) !important;
+  border-right: 1px solid rgba(192, 132, 252, 0.25) !important;
+  box-shadow: inset -1px 0 0 rgba(192, 132, 252, 0.15), 4px 0 25px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Glossy Amethyst Glass Header */
+[data-theme="shiny"] header#main-app-header,
+[data-theme="shiny"] header,
+[data-theme="shiny"] [class*="bg-[#0B0B0B]/90"] {
+  background: linear-gradient(180deg, rgba(35, 16, 66, 0.95) 0%, rgba(18, 8, 36, 0.95) 100%) !important;
+  border-bottom: 1px solid rgba(192, 132, 252, 0.28) !important;
+  box-shadow: inset 0 1px 1px rgba(233, 213, 255, 0.35), 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Inner Glossy Amethyst Containers */
+[data-theme="shiny"] .bg-\[\#0D0D0D\],
+[data-theme="shiny"] [class*="bg-[#0D0D0D]"],
+[data-theme="shiny"] .bg-slate-900,
+[data-theme="shiny"] [class*="bg-slate-900"] {
+  background: linear-gradient(135deg, rgba(28, 12, 52, 0.88) 0%, rgba(14, 6, 28, 0.9) 100%) !important;
+  border: 1px solid rgba(192, 132, 252, 0.2) !important;
+  box-shadow: inset 0 1px 0 rgba(233, 213, 255, 0.2) !important;
+}
+
+[data-theme="shiny"] .border-slate-800,
+[data-theme="shiny"] [class*="border-slate-800"],
+[data-theme="shiny"] .border-slate-700,
+[data-theme="shiny"] [class*="border-slate-700"] {
+  border-color: rgba(192, 132, 252, 0.22) !important;
+}
+
+/* Input Fields in Royal Amethyst Theme */
+[data-theme="shiny"] input,
+[data-theme="shiny"] select,
+[data-theme="shiny"] textarea {
+  background: linear-gradient(135deg, rgba(26, 11, 48, 0.95) 0%, rgba(14, 6, 26, 0.95) 100%) !important;
+  border: 1px solid rgba(192, 132, 252, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="shiny"] input:focus,
+[data-theme="shiny"] select:focus,
+[data-theme="shiny"] textarea:focus {
+  border-color: #c084fc !important;
+  box-shadow: 0 0 15px rgba(192, 132, 252, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+  outline: none !important;
+}
+
+/* ALL PRIMARY BUTTONS in Royal Amethyst Theme (Lustrous Royal Amethyst Gradient & Crystal Sheen) */
+[data-theme="shiny"] .bg-blue-600,
+[data-theme="shiny"] .bg-purple-600,
+[data-theme="shiny"] .bg-emerald-600,
+[data-theme="shiny"] [class*="bg-blue-600"],
+[data-theme="shiny"] [class*="bg-purple-600"],
+[data-theme="shiny"] [class*="bg-emerald-600"],
+[data-theme="shiny"] button[type="submit"] {
+  background: linear-gradient(180deg, #c084fc 0%, #9333ea 50%, #7e22ce 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.85), 0 4px 18px rgba(168, 85, 247, 0.55), 0 0 15px rgba(192, 132, 252, 0.45) !important;
+  color: #FFFFFF !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-theme="shiny"] .hover\:bg-blue-500:hover,
+[data-theme="shiny"] .hover\:bg-purple-500:hover,
+[data-theme="shiny"] .hover\:bg-emerald-500:hover,
+[data-theme="shiny"] [class*="hover:bg-blue-500"]:hover,
+[data-theme="shiny"] [class*="hover:bg-purple-500"]:hover,
+[data-theme="shiny"] [class*="hover:bg-emerald-500"]:hover,
+[data-theme="shiny"] button[type="submit"]:hover {
+  filter: brightness(1.2) !important;
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 1), 0 6px 26px rgba(192, 132, 252, 0.85) !important;
+}
+
+/* ALL SECONDARY, OUTLINE, CANCEL & SMALL BUTTONS in Royal Amethyst Theme (Liquid Platinum Glass) */
+[data-theme="shiny"] .bg-slate-800,
+[data-theme="shiny"] .bg-slate-700,
+[data-theme="shiny"] [class*="bg-slate-800"],
+[data-theme="shiny"] [class*="bg-slate-700"],
+[data-theme="shiny"] button.border,
+[data-theme="shiny"] button.border-slate-700,
+[data-theme="shiny"] button.border-slate-800 {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.06) 100%) !important;
+  border: 1px solid rgba(216, 180, 254, 0.35) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.45), 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+  color: #F3E8FF !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme="shiny"] .hover\:bg-slate-700:hover,
+[data-theme="shiny"] .hover\:bg-slate-600:hover,
+[data-theme="shiny"] [class*="hover:bg-slate-700"]:hover,
+[data-theme="shiny"] button.border:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.12) 100%) !important;
+  border-color: rgba(192, 132, 252, 0.8) !important;
+  color: #E9D5FF !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 14px rgba(192, 132, 252, 0.45) !important;
+}
+
+/* Small Control & Icon Buttons in Royal Amethyst Theme */
+[data-theme="shiny"] #notifications-button,
+[data-theme="shiny"] #toggle-sidebar-button,
+[data-theme="shiny"] button#user-profile-menu-button {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+  border: 1px solid rgba(216, 180, 254, 0.3) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+  color: #E9D5FF !important;
+}
+
+[data-theme="shiny"] #notifications-button:hover,
+[data-theme="shiny"] #toggle-sidebar-button:hover {
+  color: #FFFFFF !important;
+  border-color: rgba(192, 132, 252, 0.8) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 0 12px rgba(192, 132, 252, 0.5) !important;
+}
+
+/* Navigation Tabs in Royal Amethyst Theme */
+[data-theme="shiny"] nav button {
+  color: #D8B4FE !important;
+}
+
+[data-theme="shiny"] nav button:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+  border: 1px solid rgba(192, 132, 252, 0.35) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="shiny"] nav button.bg-blue-600,
+[data-theme="shiny"] nav button.bg-purple-600,
+[data-theme="shiny"] nav button[aria-current="page"] {
+  background: linear-gradient(180deg, #c084fc 0%, #9333ea 50%, #7e22ce 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.85), 0 4px 18px rgba(168, 85, 247, 0.55), 0 0 15px rgba(192, 132, 252, 0.45) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="shiny"] nav button.bg-blue-600 div,
+[data-theme="shiny"] nav button.bg-purple-600 div {
+  color: #FFFFFF !important;
+}
+
+/* ALL TOGGLE SWITCHES in Royal Amethyst Theme */
+[data-theme="shiny"] button[role="switch"] {
+  border: 1px solid rgba(192, 132, 252, 0.35) !important;
+}
+
+[data-theme="shiny"] button[role="switch"][aria-checked="true"],
+[data-theme="shiny"] button[role="switch"].bg-blue-600 {
+  background: linear-gradient(180deg, #c084fc 0%, #9333ea 100%) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.75), 0 0 14px rgba(192, 132, 252, 0.6) !important;
+}
+
+[data-theme="shiny"] button[role="switch"][aria-checked="false"],
+[data-theme="shiny"] button[role="switch"].bg-slate-700 {
+  background: linear-gradient(180deg, #381a5c 0%, #1e0c33 100%) !important;
+}
+
+[data-theme="shiny"] button[role="switch"] span {
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #e9d5ff 100%) !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6), inset 0 1px 0 #ffffff !important;
+}
+
+/* Shiny Accents, Badges & Action Links */
+[data-theme="shiny"] .text-blue-400,
+[data-theme="shiny"] .text-blue-500,
+[data-theme="shiny"] .text-cyan-400,
+[data-theme="shiny"] .text-purple-400 {
+  color: #c084fc !important;
+  text-shadow: 0 0 12px rgba(192, 132, 252, 0.6) !important;
+}
+
+[data-theme="shiny"] .bg-blue-500\/10,
+[data-theme="shiny"] .bg-purple-500\/10,
+[data-theme="shiny"] .bg-blue-500\/20,
+[data-theme="shiny"] .bg-purple-500\/20 {
+  background: linear-gradient(180deg, rgba(192, 132, 252, 0.22) 0%, rgba(147, 51, 234, 0.22) 100%) !important;
+  border: 1px solid rgba(192, 132, 252, 0.55) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+  color: #e9d5ff !important;
+}
+
+[data-theme="shiny"] .glow-primary {
+  box-shadow: 0 0 25px rgba(192, 132, 252, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Table Headers & Rows in Royal Amethyst Theme */
+[data-theme="shiny"] thead {
+  background: linear-gradient(180deg, rgba(35, 16, 66, 0.95) 0%, rgba(18, 8, 36, 0.95) 100%) !important;
+  border-bottom: 1px solid rgba(192, 132, 252, 0.25) !important;
+}
+
+[data-theme="shiny"] tr {
+  border-color: rgba(192, 132, 252, 0.15) !important;
+}
+
+[data-theme="shiny"] tbody tr:hover {
+  background: rgba(192, 132, 252, 0.1) !important;
+}
+
