@@ -5,7 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/DBMS-UI-DESIGN/',
+    base: '/',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
